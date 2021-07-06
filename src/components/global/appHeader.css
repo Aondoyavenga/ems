@@ -1,0 +1,16 @@
+.app__HeaderContainer{
+    top: 0;
+    z-index: 222;
+    color: white;
+    width: 100%;
+    display: flex;
+    position: sticky;
+    align-items: center;
+    background: #2A3F54;
+    transition: all ease-in 0.5s;
+    border-left: 1px solid black;
+    justify-content: space-between;
+    -webkit-transition: all ease-in 0.5s;
+    box-shadow: 0px 2px 2px #2A3F54;
+}
+
