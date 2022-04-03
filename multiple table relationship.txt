@@ -1,0 +1,32 @@
+SELECT SUM(sales_items_model.amount) AS totalItemAmoun, sales_model.id, sales_model.property_name, sales_model.amount AS total,
+customer_customermodel.customer_name, sales_items_model.qty, sales_items_model.amount, 
+sales_items_model.building_category, building_category.name, auth_user.username, auth_user.first_name, auth_user.last_name
+FROM sales_model
+JOIN customer_customermodel
+ON sales_model.applicant = customer_customermodel.id
+JOIN sales_items_model
+ON sales_model.uuid = sales_items_model.sale_ID
+JOIN building_category
+ON sales_items_model.building_category = building_category.id
+JOIN auth_user
+ON sales_model.createdBy_FK = auth_user.id
+WHERE sales_model.applicant = 37
+
+location
+SELECT sales_model.id, sales_model.property_name, sales_model.amount AS total,
+customer_customermodel.customer_name, sales_items_model.qty, sales_items_model.amount, 
+sales_items_model.building_category, building_category.name, auth_user.username, location.name,
+auth_user.first_name, auth_user.last_name,
+sales_model.uuid, sales_items_model.sale_ID
+FROM sales_model
+JOIN customer_customermodel
+ON sales_model.applicant = customer_customermodel.id
+JOIN sales_items_model
+ON sales_model.uuid = sales_items_model.sale_ID
+JOIN building_category
+ON sales_items_model.building_category = building_category.id
+JOIN auth_user
+ON sales_model.createdBy_FK = auth_user.id
+JOIN location
+ON sales_items_model.location = location.id
+WHERE sales_model.applicant = 26

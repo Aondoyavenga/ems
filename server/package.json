@@ -1,0 +1,33 @@
+{
+  "name": "ems-app",
+  "version": "1.0.0",
+  "description": "Estate Accounting Management System",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js",
+    "build": "nexe index.js"
+  },
+  "keywords": [
+    "Estate",
+    "Accounting",
+    "System"
+  ],
+  "author": "PUAA",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "multer": "^1.4.2",
+    "mysql": "^2.18.1",
+    "uuid4": "^2.0.2",
+    "uuidv4": "^6.2.7"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
