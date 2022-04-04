@@ -53,6 +53,7 @@ const EditSaleFeed = ({
     property: "",
     location: "",
     createdAt: "",
+    date_purchase: "",
     build_category: "",
   };
   const [saleForm, setSaleForm] = useState([saleFormTemplate]);
@@ -139,7 +140,6 @@ const EditSaleFeed = ({
   const handleEdit = async (e) => {
     e.preventDefault();
     const err = await Object.keys(data).map((key) => isEmpty(key));
-    console.log("hello", data);
     const isError = err.includes(true);
     if (isError === true) {
       return setError("All field are required");
@@ -211,6 +211,8 @@ const EditSaleFeed = ({
                     property: sale && sale.items[i].property_id,
                     location: sale && sale.items[i].location_id,
                     createdAt: sale && sale.items[i].createdAt,
+                    date_purchase: sale && sale.items[i].date_purchase,
+                    status: sale && sale.items[i].status,
                     build_category: sale && sale.items[i].building_id, 
                   }
                 )
@@ -384,8 +386,8 @@ const EditSaleFeed = ({
                       </div>
                     )}
                   </th>
-
-                  <th></th>
+                  <th>Purchase Date</th>
+                  <th>Status</th>
                 </thead>
                 <tbody id="je__Table">
                   {saleForm.map((salef, index) => (
@@ -493,7 +495,26 @@ const EditSaleFeed = ({
                               })}
                           </select>
                         </td>
-
+                        <td>
+                          <input 
+                            type="date" 
+                            name="date_purchase" 
+                            value={salef.date_purchase}
+                            onChange={(e) => handleChange(e, index)}
+                          />
+                        </td>
+                        <td>
+                          <select
+                            name="status"
+                            value={salef.status}
+                            style={{ border: "none" }}
+                            onChange={(e) => handleChange(e, index)}
+                          >
+                            <option value="Refund">Refund</option>
+                            <option value="Running">Running</option>
+                            <option value="Completed">Completed</option>
+                          </select>
+                        </td>
                         <td onClick={() => handleRemovesaleform(index)}>
                           <ToolTip title="Delete Row">
                             <span

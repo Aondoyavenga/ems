@@ -250,7 +250,7 @@ const SaleFeed = ({ setOpen, isWidget, setIswidget, add_BuildCategories }) => {
         </div>
       </div>
       <Grid container alignItems="center" justify="center">
-        <Grid item lg={10} md={10} sm={12}>
+        <Grid item lg={11} md={11} sm={12}>
           <Paper className="p-2" style={{ backgroundColor: "inherit" }}>
             <Grid item lg={12} md={12} sm={12}>
               <Grid container alignItems="center" justify="center">

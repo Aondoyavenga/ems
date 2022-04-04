@@ -44,6 +44,8 @@ const SaleMultipleFeed = ({
     property: "",
     location: "",
     createdAt: "",
+    date_purchase: "",
+    status: "",
     build_category: "",
   };
   const [saleForm, setSaleForm] = useState([saleFormTemplate]);
@@ -307,7 +309,8 @@ const SaleMultipleFeed = ({
                       </div>
                     )}
                   </th>
-
+                  <th>Purchase Date</th>
+                  <th>Status</th>
                   <th></th>
                 </thead>
                 <tbody id="je__Table">
@@ -416,6 +419,27 @@ const SaleMultipleFeed = ({
                                   >{`${name}`}</option>
                                 );
                               })}
+                          </select>
+                        </td>
+
+                        <td>
+                          <input 
+                            type="date" 
+                            name="date_purchase" 
+                            value={salef.date_purchase}
+                            onChange={(e) => handleChange(e, index)}
+                          />
+                        </td>
+                        <td>
+                          <select
+                            name="status"
+                            value={salef.status}
+                            style={{ border: "none" }}
+                            onChange={(e) => handleChange(e, index)}
+                          >
+                            <option value="Running" selected>Running</option>
+                            <option value="Refund">Refund</option>
+                            <option value="Completed">Completed</option>
                           </select>
                         </td>
 

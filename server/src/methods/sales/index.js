@@ -32,7 +32,7 @@ const get_All_Sales_Pending = (req, res) => {
   SELECT sales_items_model.id, sales_items_model.qty, sales_items_model.amount, sales_items_model.sale_ID, sales_items_model.createdAt, 
   prop_servicemodel.name AS property_name, sales_items_model.property AS property_id, location.name AS location_name, 
   sales_items_model.location AS location_id, building_category.name AS building_name, sales_items_model.building_category AS building_id,
-  sales_items_model.plot_number
+  sales_items_model.plot_number, sales_items_model.date_purchase, sales_items_model.status
     FROM sales_items_model
     JOIN prop_servicemodel
     ON sales_items_model.property = prop_servicemodel.id
@@ -214,7 +214,8 @@ const handleApproval = (req, res) => {
 const handle_Update_Sale_Item = async (data) => {
   
   const query = `INSERT INTO sales_items_model 
-      (id, qty, amount, plot_number, sale_ID, property, location, createdAt, building_category)
+      (id, qty, amount, plot_number, sale_ID, property, location, createdAt,
+        date_purchase, status, building_category)
       VALUES ? ON DUPLICATE KEY UPDATE 
       qty = VALUES(qty),
       amount = VALUES(amount),
@@ -223,6 +224,8 @@ const handle_Update_Sale_Item = async (data) => {
       property = VALUES(property),
       location = VALUES(location),
       createdAt = VALUES(createdAt),
+      date_purchase = VALUES(date_purchase),
+      status = VALUES(status),
       building_category = VALUES(building_category)
   `;
   
