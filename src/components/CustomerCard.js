@@ -1,6 +1,6 @@
 import React from 'react'
 import { Avatar, IconButton, ListItem,
-     ListItemAvatar, ListItemText, Paper, Typography } from '@material-ui/core'
+     ListItemAvatar, ListItemText, Paper, Tooltip, Typography } from '@material-ui/core'
 import { ChevronRight, HistoryTwoTone } from '@material-ui/icons'
 import { Fragment } from 'react'
 import { Link } from 'react-router-dom'
@@ -30,8 +30,13 @@ const CustomerCard = ({post, id, name, cusID, code, amount_paid, avatar, handle_
                     </ListItemAvatar>
                     <ListItemText
                         primary={
-                            
-                            <Typography variant='caption' > {name} </Typography>
+                            <Tooltip
+                                title={name}
+                            >
+                                <Typography variant='subtitle1' > 
+                                    {`${name?.split(' ')[0]} `} 
+                                </Typography>
+                            </Tooltip>
                         }
                     />
                     <Link to={`/sales/tx/${id}/${name}`}>
@@ -44,7 +49,11 @@ const CustomerCard = ({post, id, name, cusID, code, amount_paid, avatar, handle_
                     {
                         post&&
                         <IconButton size='small'>
-                            <ChevronRight />
+                            <ChevronRight 
+                                style={{
+                                    color: '#2a3f54'
+                                }}
+                            />
                         </IconButton>
                     }
                 </ListItem>

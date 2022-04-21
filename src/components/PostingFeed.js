@@ -22,10 +22,10 @@ const PostingFeed = ({ setOpen }) => {
   const token = useSelector(selectToken);
   const todayTxs = useSelector(selectTodayTxs)
   const [Error, setError] = useState()
+  const [salesItem, setSalesItem] = useState([])
   const [success, setSuccess] = useState(false);
   const [message, setMessage] = useState();
-  const [searchKey, setSearchKey] = useState();
-  const [txSearch, setTxSearch] = useState();
+  const [searchKey, setSearchKey] = useState('');
   const txAccounts = useSelector(selectTxAccounts);
 
   const [data, setData] = useState({
@@ -42,6 +42,7 @@ const PostingFeed = ({ setOpen }) => {
     applicant_name: "",
     property_name: "",
     due_date: "",
+    property_FK: "",
     amount_in_words: "",
     amount_paid: "",
     amount_in_words: "",
@@ -58,21 +59,39 @@ const PostingFeed = ({ setOpen }) => {
       [name]: value,
     });
   };
+  const handleGetSalesItem = async(saleId) => {
+    try {
+      setSalesItem([])
+      const { data, status } = await axios.get(`/sale/items/${saleId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      if(status == 200) return setSalesItem(data)
+      return data
+    } catch (error) {
+      return error
+    }
+  }
   const handle_Set_Ticket = (applicant, code, paid) => {
     const filterduepay =
       txAccounts && txAccounts.filter((due) => due.cusID == applicant);
 
     if (filterduepay.length > 0) {
-      return setData({
-        ...data,
-        account_FK: code,
-        signature: user && user.signature,
-        rcpt_no: filterduepay[0].uuid,
-        applicant_name: filterduepay[0].name,
-        property_name: filterduepay[0].property_name,
-        amount_paid: parseInt(paid),
-        description: "Being payment for ",
-      });
+      return (
+        setData({
+          ...data,
+          account_FK: code,
+          signature: user && user.signature,
+          rcpt_no: filterduepay[0].uuid,
+          applicant_name: filterduepay[0].name,
+          property_name: filterduepay[0].property_name,
+          amount_paid: parseInt(paid),
+          description: "Being payment for ",
+        }),
+        handleGetSalesItem(filterduepay[0].uuid)
+
+      )
     }
   };
 
@@ -114,23 +133,10 @@ const PostingFeed = ({ setOpen }) => {
       account_FK: "",
       tx_date: "",
       postBy_FK: "",
+      property_FK: "",
       amount_in_words: "",
     });
   };
-
-  // handle search
-  useEffect(() => {
-    const filterTxAccounts =
-      txAccounts &&
-      txAccounts.filter((txacc) => txacc.name.includes(searchKey));
-    if(!filterTxAccounts) return setTxSearch('');
-    return setTxSearch(filterTxAccounts);
-  }, [searchKey]);
-
-  useEffect(() =>{
-    return setTxSearch('');
-  }, [])
-
   return (
     <div className="app__Feed">
       <AppSnackbar open={success} setOpen={setSuccess} message={message} />
@@ -158,8 +164,13 @@ const PostingFeed = ({ setOpen }) => {
             className="hide-on-print"
             style={{ overflow: "auto", height: "90vh" }}
           >
-            {txSearch
-              ? txSearch.map((txacc, index) => {
+            {
+                txAccounts?.length > 0 &&
+                txAccounts?.filter(item =>{
+                    if(searchKey == '') {
+                        return item
+                    }else if(item.name?.toLowerCase().includes(searchKey?.toLowerCase())) return item
+                }).map((txacc, index) => {
                   return (
                     <CustomerCard
                       post
@@ -168,24 +179,14 @@ const PostingFeed = ({ setOpen }) => {
                       handle_Set_Ticket={handle_Set_Ticket}
                     />
                   );
-                })
-              : txAccounts &&
-                txAccounts.map((txacc, index) => {
-                  return (
-                    <CustomerCard
-                      post
-                      key={index}
-                      {...txacc}
-                      handle_Set_Ticket={handle_Set_Ticket}
-                    />
-                  );
-                })}
+              })}
           </Grid>
           <Grid item lg={9} md={9} style={{ marginTop: -40,  overflow: "auto", height: "90vh"}}>
             <div
               style={{
-                top: -20,
+                top: 40,
                 position: 'sticky',
+                marginBottom: 42,
                 backgroundColor: '#ededed'
             }}>
               <PostingTicket
@@ -196,6 +197,7 @@ const PostingFeed = ({ setOpen }) => {
                 data={data}
                 Error={Error}
                 setData={setData}
+                salesItem={salesItem}
               />
             </div>
             

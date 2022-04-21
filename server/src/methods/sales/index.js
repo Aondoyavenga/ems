@@ -1,6 +1,41 @@
 import db from "../../db.js";
 import createdAt from "../../middleware/createdAt.js";
 
+const get_All_Sales_Items = (req, res) =>{
+  const { saleId } = req.params
+  const query = `
+    SELECT sales_items_model.id, sales_items_model.qty, sales_items_model.amount, sales_items_model.sale_ID, sales_items_model.createdAt, 
+    prop_servicemodel.name AS property_name, sales_items_model.property AS property_id
+
+    FROM sales_items_model
+    JOIN prop_servicemodel
+    ON sales_items_model.property = prop_servicemodel.id
+    
+    WHERE sales_items_model.sale_ID = ?
+  `;
+
+  const payMents = `
+    SELECT transactionmodel.property_FK, transactionmodel.amount
+    FROM transactionmodel
+    
+    WHERE transactionmodel.rcpt_no = ?
+  `
+
+  db.query(query, [saleId], (error, result) =>{
+    if(error) return res.status(404).send({message: error.message})
+    db.query(payMents, [saleId], (error, pays) =>{
+      if(error) return res.status(404).send({message: error.message})
+      const sales = result.map(sale =>{
+        return ({
+          ...sale,
+          paid: pays.filter(p => p.property_FK == sale.id)
+        })
+      })
+      res.send(sales)
+    })
+  })
+}
+
 const get_All_Sales_Pending = (req, res) => {
   const query = `
     SELECT sales_model.id,
@@ -211,6 +246,17 @@ const handleApproval = (req, res) => {
   });
 };
 
+const handle_Update_Sale_item = (req, res) => {
+  const {id} = req.params
+  const query = `
+    UPDATE sales_items_model SET status =? WHERE id=?
+  `
+  db.query(query, ['Refund', id], (error, result) => {
+    if(error) return res.status(404).send({message: error.message})
+    res.status(200).send({message: 'Property Updated'})
+  })
+}
+
 const handle_Update_Sale_Item = async (data) => {
   
   const query = `INSERT INTO sales_items_model 
@@ -420,6 +466,8 @@ const SALES = {
   get_Payment_History,
   get_All_Paid_On_Pay,
   handle_Sale_Update,
+  get_All_Sales_Items,
+  handle_Update_Sale_item,
   get_Sale_Repayment_Report,
 };
 

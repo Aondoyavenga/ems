@@ -3,12 +3,13 @@ import { CheckCircle, Close, Print } from '@material-ui/icons'
 import React from 'react'
 import { Fragment } from 'react'
 import { useSelector } from 'react-redux'
-import { selectUser, selectAccounts } from '../appState/appSlice'
+import { selectUser, selectAccounts, selectPropServices } from '../appState/appSlice'
 
 const PostingTicket = ({ data, message, Error,
-        handleChange, handlePost, setData, setMessage
+        handleChange, handlePost, setData, setMessage, salesItem
     }) => {
     const user = useSelector(selectUser)
+    const properties = useSelector(selectPropServices)
     const accounts = useSelector(selectAccounts);
     const printReceipt =()=>{
         window.print()
@@ -84,6 +85,34 @@ const PostingTicket = ({ data, message, Error,
                             value={data.applicant_name}
                             className='ml-3'
                         />
+                        <p>
+                        Property: </p>
+                        <select
+                            name="property_FK"
+                            placeholder="Account"
+                            style={{  
+                                height: '30px',
+                                borderLeft: 'none',
+                                borderRight: 'none',
+                                borderTop: 'none',
+                                borderBottom: '1.5px solide #EDEDED' 
+                            }}
+                            value={data.property_FK}
+                            onChange={e =>handleChange(e)}
+                        >
+                            <option value="">Select</option>
+                            {
+                                salesItem?.length > 0 &&
+                                salesItem?.map(item =>{
+                                    const {id, property_name} = item
+                                    return (
+                                        <Fragment>
+                                            <option value={id}> {property_name} </option>
+                                        </Fragment>
+                                    )
+                                })
+                            }
+                        </select>
                     
                 </div>
                 <div style={{ display: 'flex'}}>
@@ -96,7 +125,6 @@ const PostingTicket = ({ data, message, Error,
                         className='ml-3'
                         value={data.amount}
                         placeholder='Amount (10000)'
-                        value={data.amount}
                         onChange={e =>handleChange(e)}
                         style={{flex: 2}}
                     />
@@ -108,11 +136,17 @@ const PostingTicket = ({ data, message, Error,
                         <select
                             name="bank"
                             placeholder="Account"
-                            style={{ border: "none" }}
+                            style={{  
+                                height: '30px',
+                                borderLeft: 'none',
+                                borderRight: 'none',
+                                borderTop: 'none',
+                                borderBottom: '1.5px solide #EDEDED' 
+                            }}
                             value={data.bank}
                             onChange={e =>handleChange(e)}
                         >
-                            <option value=""></option>
+                            <option value="">Select</option>
                             {accounts &&
                             accounts.filter(acc => acc.cusID == null)
                             .map((accs, index) => {
@@ -154,7 +188,7 @@ const PostingTicket = ({ data, message, Error,
                             multiline
                             size='small'
                             name='description'
-                            placeholder='Property'
+                            placeholder='Description'
                             value={data.description}
                             onChange={e =>handleChange(e)}
                         />

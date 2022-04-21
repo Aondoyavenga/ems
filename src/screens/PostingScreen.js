@@ -2,7 +2,7 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
-import { selectToken,  setAccounts,  setCustomers, setDuePayments, settodayTxs, setTxAccounts, setUser, } from '../appState/appSlice'
+import { selectToken,  setAccounts,  setCustomers, setDuePayments, setPropServices, settodayTxs, setTxAccounts, setUser, } from '../appState/appSlice'
 import AppBackdrop from '../components/global/AppBackDrop'
 import SideBarMenu from '../components/global/SideBarMenu'
 import PostingFeed from '../components/PostingFeed'
@@ -100,7 +100,6 @@ const PostingScreen = () => {
             if(error) return error.response.statusText
         })
     }
-
     
 
     useEffect(() =>{

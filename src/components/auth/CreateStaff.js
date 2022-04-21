@@ -1,7 +1,7 @@
 // MUI Stuff
 import Paper from "@material-ui/core/Paper";
 import Avatar from "@material-ui/core/Avatar";
-
+import logo from '../../assets/logo.png'
 import React, { useState } from "react";
 import AppBackdrop from "../global/AppBackDrop";
 import AppSnackbar from "../global/AppSnackbar";
@@ -26,7 +26,7 @@ const CreateStaff = () => {
               className="align-items-center justify-content-center d-flex"
               style={{ flexDirection: "column" }}
             >
-              <Avatar variant="rounded" style={{ width: 80, height: 80 }} />
+              <Avatar variant="rounded" src={logo} style={{ width: 200, height: 200 }} />
               <Typography style={{ color: "#2a3f54", padding: 5 }}>
                 <b>USER</b>
               </Typography>

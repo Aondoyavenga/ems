@@ -26,6 +26,7 @@ import EditSaleScreen from './screens/EditSaleScreen'
 import SalesListScreen from './screens/SalesListScreen'
 import ExpenseListScreen from './screens/ExpenseListScreen'
 import PrintCusForm from './screens/PrintCusForm'
+import RefunScreen from './screens/RefunScreen'
 
 
 const Routes = () => {
@@ -50,6 +51,7 @@ const Routes = () => {
                 <Route exact path ='/sales' component ={SaleScreen} />
                 <Route exact path ='/sales_list' component ={SalesListScreen} />
                 <Route exact path ='/sales/tx' component={PostingScreen }/>
+                <Route exact path ='/refuntx' component={RefunScreen} />
                 <Route exact path ='/sales/:uuid' component ={EditSaleScreen} />
                 <Route exact path ='/applications' component={MdApproveScreen} />
                 <Route exact path ='/sales/tx/:uuid/:name' component={SalePaymentHistScreen }/>

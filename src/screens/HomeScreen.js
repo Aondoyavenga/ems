@@ -136,9 +136,9 @@ const HomeScreen = () => {
   };
 
   useEffect(() => {
-    if (!token) {
-      return history.push("/");
-    }
+    // if (!token) {
+    //   return history.push("/");
+    // }
     return (
       get_Session(),
       get_Paid_Onpay_Sales(),
@@ -146,7 +146,7 @@ const HomeScreen = () => {
       get_User_Raised_Expense(),
       getCustomers(),
       get_Staffs(),
-      get_Todays_Tx
+      get_Todays_Tx()
     );
   }, [open]);
 

@@ -31,7 +31,7 @@ const AppHeader = ({ title, search, searchWidget, setSearchWidget }) => {
         </div>
         <aside className="app__HeaderRight">
           <Tooltip title="Go To Dashboard">
-            <IconButton onClick={() => history.push("/")}>
+            <IconButton onClick={() => history.push("/home")}>
               <Dashboard />
             </IconButton>
           </Tooltip>

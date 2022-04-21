@@ -18,7 +18,7 @@ const get_Posted_Journal_ByUser = (req, res) => {
 const get_Posted_Journal = (req, res) => {
     const {username} = req.user
     const query = `
-        SELECT * FROM journal_model WHERE
+        SELECT * FROM journal_model
     `;
     db.query(query, (error, result) =>{
         if(error) return console.error(error.message);

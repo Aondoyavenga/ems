@@ -5,9 +5,12 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setToken } from "../../appState/appSlice";
 import { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useHistory } from "react-router-dom";
 
 const LoginForm = ({ setSuccess, setError, setOpen, user, setUser }) => {
   const dispatch = useDispatch();
+  const history = useHistory()
   const [invalid, setInvalid] = useState({
     username: "",
     password: "",
@@ -38,9 +41,14 @@ const LoginForm = ({ setSuccess, setError, setOpen, user, setUser }) => {
     axios
       .post("/auth/login", user)
 
-      .then((result) => {
+      .then( async(result) => {
         setSuccess(false);
-        return dispatch(setToken(result.data));
+        const key = result.data
+        // await AsyncStorage.setItem('token', `${key}`)
+        return (
+          dispatch(setToken(result.data)),
+          history.push('/home')
+        );
       })
       .catch((error) => {
         setOpen(false);

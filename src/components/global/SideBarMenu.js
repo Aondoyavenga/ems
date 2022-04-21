@@ -20,7 +20,7 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { selectToken, selectUser, setToken } from "../../appState/appSlice";
 import SideBarNavigation from "./SideBarNavigation";
 import ProfileSetting from "./ProfileSetting";
-import { Link } from "react-router-dom";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SideBarMenu = () => {
   const history = useHistory();
@@ -28,11 +28,16 @@ const SideBarMenu = () => {
   const token = useSelector(selectToken);
   const user = useSelector(selectUser);
   const [open, setOpen] = useState(false);
-  useEffect(() => {
-    if (!token) {
-      return history.push("/");
-    }
-  }, [token]);
+  // useEffect(() => {
+  //   if (!token) {
+  //     return history.push("/");
+  //   }
+  // }, [token]);
+
+  // useEffect( async() =>{
+  //   const token = await AsyncStorage.getItem('token')
+  //   dispatch(setToken(token))
+  // }, [])
   return (
     <Fragment>
       <div className="side__BarContainer p-1 hide-on-print">

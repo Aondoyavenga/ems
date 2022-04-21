@@ -129,6 +129,14 @@ function UserRoles({ admin, expense, sales, entries, accountant, ico, md }) {
                       <ListItemText secondary="Posting" />
                     </ListItem>
                   </Link>
+                  <Link to='/refuntx'>
+                    <ListItem button className={classes.nested}>
+                      <ListItemIcon>
+                        <FiberManualRecordIcon style={{ fontSize: '12px', color: 'gray' }} />
+                      </ListItemIcon>
+                      <ListItemText secondary="Refun" />
+                    </ListItem>
+                  </Link>
                   <Link to='/ps'>
                     <ListItem button className={classes.nested}>
                       <ListItemIcon>

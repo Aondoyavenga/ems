@@ -18,7 +18,6 @@ const SalesItemsModal = ({ items, open, setOpen }) => {
                 isOpen={open} size='lg' 
                 centered overflowScroll={false} 
             >
-                  
                 <div
                     style={{
                         paddingLeft: 25,

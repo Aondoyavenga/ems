@@ -79,8 +79,7 @@ const SaleWidget = ({ sales, isReport, isWidget, setIswidget }) => {
     const history = useHistory()
     const [open, setOpen] = useState(false)
     const [items, setItems] = useState([])
-    const [searchKey, setSearchKey] = useState();
-    const [saleSearch, setSaleSearch] = useState();
+    const [searchKey, setSearchKey] = useState('');
 
     const handleClick = (item) => {
         setItems(item)
@@ -94,25 +93,6 @@ const SaleWidget = ({ sales, isReport, isWidget, setIswidget }) => {
         const total = data&& data.reduce((a, v) =>+v.amount_paid + a, 0)
         return total
     }
-
-    
-    // handle search
-    useEffect(() => {
-        const filterSales =
-        sales &&
-        sales.filter((sale) => sale.applicant_name.includes(searchKey));
-        if(filterSales) {
-            return setSaleSearch(filterSales);
-        }
-           
-         return setSaleSearch('');
-        
-    }, [searchKey]);
-
-    useEffect(() =>{
-        return setSaleSearch('');
-    }, [])
-
    
 
     return (
@@ -140,7 +120,7 @@ const SaleWidget = ({ sales, isReport, isWidget, setIswidget }) => {
                 explore='/sales_list'
                 inputType='text'
                 setSearchKey={setSearchKey}
-                placeHolder='Search (Customer name) ...'
+                placeHolder='Search (Customer name, amount & date) ...'
             />
             <table className='mt-2 table-hover'
                 style={{width: '98%', margin: 'auto'}}
@@ -163,22 +143,18 @@ const SaleWidget = ({ sales, isReport, isWidget, setIswidget }) => {
                 </thead>
                 <tbody>
                     {
-                        saleSearch ?
-                        saleSearch.map((sale, index) =>{
-                            return(
-                            <RenderList 
-                                {...sale} 
-                                key={index} 
-                                sale={sale} 
-                                index={index} 
-                                isWidget={isWidget}
-                                handleClick={handleClick}
-                            />
-                            )
+                        
+                        sales?.length > 0 &&
+                        sales.filter(item => {
+                            if(searchKey == '') {
+                                return item
+                            }else if (item.applicant_name?.toLowerCase()?.includes(searchKey?.toLowerCase())){
+                                return item
+                            }else if(item.amount?.toString().includes(parseInt(searchKey))){
+                                return item
+                            } else if(item.sale_date?.includes(searchKey)) return item
                         })
-                        :
-                        sales &&
-                        sales.map((sale, index) =>{
+                        .map((sale, index) =>{
                             return(
                             <RenderList 
                                 {...sale} 
@@ -203,7 +179,7 @@ const SaleWidget = ({ sales, isReport, isWidget, setIswidget }) => {
                                 <b>Total:</b>
                             </Typography>
                         </td>
-                        <td>
+                        <td colSpan={2}>
                             <Typography variant='subtitle1'
                             style={{color: 'white'}}
                             >

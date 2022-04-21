@@ -17,14 +17,18 @@ import {
   ShoppingCart,
 } from "@material-ui/icons";
 import React, { useState } from "react";
+import { useEffect } from "react";
 import { Fragment } from "react";
 import { useSelector } from "react-redux";
-import { selectUser } from "../../appState/appSlice";
+import { selectUser, setToken } from "../../appState/appSlice";
 import UserRoles from "./UserRoles";
+
 
 const SideBarNavigation = () => {
   const user = useSelector(selectUser);
   const [collapse, setCollapse] = useState();
+
+  
   return (
     <div className="list__Box">
       {user && user.entries !== "no" && (
