@@ -4,7 +4,8 @@ import createdAt from "../../middleware/createdAt.js";
 const get_All_Sales_Items = (req, res) =>{
   const { saleId } = req.params
   const query = `
-    SELECT sales_items_model.id, sales_items_model.qty, sales_items_model.amount, sales_items_model.sale_ID, sales_items_model.createdAt, 
+    SELECT sales_items_model.id, sales_items_model.qty, sales_items_model.amount, 
+    sales_items_model.sale_ID, sales_items_model.purchase_date, sales_items_model.status, sales_items_model.createdAt, 
     prop_servicemodel.name AS property_name, sales_items_model.property AS property_id
 
     FROM sales_items_model
@@ -364,9 +365,10 @@ const handle_Sale_Update = (req, res) =>{
 
 const handle_Insert_Sale_Item = async (data) => {
   const query = `INSERT INTO sales_items_model (
-        qty, amount, plot_number, sale_ID, property,location,createdAt, building_category
+        qty, amount, plot_number, sale_ID, property,location,createdAt, date_purchase, status, building_category
     )
     VALUES ?`;
+    
   db.query(query, [data], (error, result) => {
     if (error) return error.message;
     return result;

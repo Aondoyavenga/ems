@@ -23,10 +23,10 @@ import RenderPeriodicTable from "./global/RenderPeriodicTable";
 import ExpenseAnalysisReport from "./ExpenseAnalysisReport";
 import CONSTANTS from "../constants";
 
-const RenderHead = ({exphead, setExpHead, expCategories}) =>{
+const RenderHead = ({ title, exphead, setExpHead, expCategories}) =>{
   return (
     <Fragment>
-      <th>Heading</th>
+      <th> {title? title : "Heading"} </th>
         <th>
         <select
           name="heanding"
@@ -69,6 +69,8 @@ const ExpenseReportFeed = () => {
   const [swap, setSwap] = useState(1)
   const [exphead, setExpHead] = useState()
   const [groupHead, setGroupHead] = useState()
+  const [subGroupHead, setSubGroupHead] = useState()
+
   const [data, setData] = useState({
     start_date: CONSTANTS.createdAt,
     end_date: CONSTANTS.createdAt,
@@ -136,6 +138,23 @@ const ExpenseReportFeed = () => {
   const get_Ex_Raised_Head_periodic_Report =() => {
     return axios
       .get(`/expense/group_head/${groupHead}/${data.start_date}/${data.end_date}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((result) => {
+       if(result.data) return  setGroupHeadreports(result.data);
+      })
+      .catch((error) => {
+        if (error) {
+          return error;
+        }
+      });
+  }
+
+  const get_Ex_Raised_Heading_Subcategory_periodic_Report =() => {
+    return axios
+      .get(`/expense/group_head_subhead/${groupHead}/${subGroupHead}/${data.start_date}/${data.end_date}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -939,6 +958,218 @@ const ExpenseReportFeed = () => {
             
           </Fragment>
         )
+        case 6: 
+        return (
+          <Fragment>
+             <Grid container spacing={2}>
+                <Grid item lg={12} md={12} sm={12}>
+                  <div className="p-1" />
+                  {/* Expense Tableview */}
+                  <table
+                    className="mt-1 table-bordered hide-on-print"
+                    style={{
+                      width: "98%",
+                      margin: "auto",
+                      position: "sticky",
+                      top: 0,
+                      zIndex: 222,
+                    }}
+                  >
+                    <thead>
+                      <RenderHead 
+                        exphead={groupHead}
+                        setExpHead={setGroupHead}
+                        expCategories={groupHeads}
+                      />
+                      <RenderHead 
+                        title='Sub-Heading'
+                        exphead={subGroupHead}
+                        setExpHead={setSubGroupHead}
+                        expCategories={expCategories}
+                      />
+                      <th>From</th>
+                      <th>
+                      <input
+                        type='date'
+                        value={data.start_date}
+                        onChange={(e) =>
+                          setData({
+                            ...data,
+                            start_date: e.target.value,
+                          })
+                        }
+                        style={{
+                          width: "100%",
+                          outline: "none",
+                          border: "none",
+                          height: "30px",
+                        }}
+                      />
+                      </th>
+                      <th>To</th>
+                      <th>
+                        <input
+                          name="end_date"
+                          type="date"
+                          value={data.end_date}
+                          onChange={(e) => handleChange(e)}
+                        />
+                      </th>
+                      <th>
+                        <Button
+                          size="small"
+                          endIcon={<Search />}
+                          onClick={get_Ex_Raised_Heading_Subcategory_periodic_Report}
+                          style={{
+                            background: "#2a3f54",
+                            color: "white",
+                            width: "100%",
+                          }}
+                          disabled={!data.start_date && data.end_date}
+                        >
+                          Search
+                        </Button>
+                      </th>
+                    </thead>
+                  </table>
+    
+                  <table
+                    className="table-hover table-bordered"
+                    style={{ width: "98%", margin: "auto" }}
+                  >
+                    <thead
+                      style={{
+                        top: 35,
+                        color: "#2A3F54",
+                        position: "sticky",
+                        background: "#EDEDEDED",
+                      }}
+                    >
+                      <th style={{ border: "1px solid #F7F7F7F7" }}>#</th>
+                      <th style={{ border: "1px solid #F7F7F7F7" }}>Item</th>
+                      <th style={{ border: "1px solid #F7F7F7F7" }}>Description</th>
+                      <th style={{ border: "1px solid #F7F7F7F7" }}>
+                        Acc. Payable
+                      </th>
+                      <th style={{ border: "1px solid #F7F7F7F7" }}>
+                        Acc. Receivable
+                      </th>
+                      <th style={{ border: "1px solid #F7F7F7F7" }}>
+                        Amt (<s>N</s>)
+                      </th>
+                      <th style={{ border: "1px solid #F7F7F7F7" }}>Date</th>
+                      <th style={{ border: "1px solid #F7F7F7F7" }}>Pay Method</th>
+                    </thead>
+                    <tbody>
+                      {groupHeadreports?.length > 0 &&
+                        groupHeadreports?.map((exp, index) => {
+                          const {
+                            expense_FK,
+                            description,
+                            amount,
+                            pay_method,
+                            expense_date,
+                            payee_account,
+                            payment_account,
+                          } = exp;
+                          return (
+                            <Fragment key={index}>
+                              <tr>
+                                <td style={{ textAlign: "center" }}>
+                                  
+                                  {index + 1}
+                                </td>
+                                <td style={{ textAlign: "left" }}>
+                                 
+                                 {expense_FK}
+                                </td>
+                                <td style={{ textAlign: "left" }}>
+                                  
+                                  {description}
+                                </td>
+                                <td style={{ textAlign: "left" }}>
+                                  
+                                  {renderAccount(payment_account)}
+                                </td>
+                                <td style={{ textAlign: "left" }}>
+                                  
+                                  {renderAccount(payee_account)}
+                                </td>
+                                <td>
+                                  <Typography color="error">
+                                    {amount.toLocaleString()}
+                                  </Typography>
+                                </td>
+                                <td>
+                                  
+                                  {new Date(expense_date).toLocaleDateString()}
+                                </td>
+                                <td> {pay_method} </td>
+                              </tr>
+                            </Fragment>
+                          );
+                        })}
+                      {groupHeadreports && groupHeadreports.length > 0 && (
+                        <tr style={{ background: "#2A3F54", color: "white" }}>
+                          <td colSpan={3}>
+                            <Typography
+                              variant="subtitle1"
+                              style={{ color: "white" }}
+                            >
+                              <b>Total:</b>
+                            </Typography>
+                          </td>
+                          <td colSpan={3}>
+                            <Typography
+                              variant="subtitle1"
+                              style={{ color: "white" }}
+                            >
+                              <b>{calcuAmt(groupHeadreports)}</b>
+                            </Typography>
+                          </td>
+                          <td colSpan={2}></td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                  {!expItems && (
+                    <div
+                      className="alert alert-warning"
+                      style={{ width: "98%", margin: "auto" }}
+                    >
+                      {`Ops!!! No Transaction History`}
+                    </div>
+                  )}
+                  {groupHeadreports && groupHeadreports.length > 0 && (
+                    <table className="table hide-on-print">
+                      <tbody>
+                        <tr>
+                          <td>
+                            <DownloadExpenseReport
+                              dataSet1={groupHeadreports}
+                              renderAccount={renderAccount}
+                              renderExpCategory={renderExpCategory}
+                              date={data.start_date + "-" + data.end_date}
+                            />
+                          </td>
+                          <td>
+                            <button
+                              onClick={() => window.print()}
+                              variant="contained"
+                              color="inherit"
+                            >
+                              Print
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  )}
+                </Grid>
+              </Grid>
+            
+          </Fragment>
+        )
       default:
        return
     }
@@ -1037,6 +1268,21 @@ const ExpenseReportFeed = () => {
               onClick={() =>setSwap(5)}
             > 
               Group Headings
+            </Button>
+          </Tooltip>
+          <Tooltip title='Pool Expense Report'>                     
+          <Button
+              style={{
+                  width: 'auto',
+                  marginLeft: 10,
+                  color: swap == 6 ?  '#20C997' : 'white',
+                  boxSizing: 'border-box',
+                  backgroundColor: swap == 6 ?  '#F7F7F7F7' : '#2a3f54',
+                  boxShadow: '0px 2px 2px gray'
+              }}
+              onClick={() =>setSwap(6)}
+            > 
+              Group Headings/ Sub-Heads
             </Button>
           </Tooltip>
           </div>

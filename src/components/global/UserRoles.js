@@ -134,7 +134,7 @@ function UserRoles({ admin, expense, sales, entries, accountant, ico, md }) {
                       <ListItemIcon>
                         <FiberManualRecordIcon style={{ fontSize: '12px', color: 'gray' }} />
                       </ListItemIcon>
-                      <ListItemText secondary="Refun" />
+                      <ListItemText secondary="Refund" />
                     </ListItem>
                   </Link>
                   <Link to='/ps'>

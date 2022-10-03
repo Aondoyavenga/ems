@@ -37,9 +37,32 @@ const get_All_Raised_By_Heading = (req, res) => {
       
       JOIN expense_heading ON(expense_heading.id =  expense_model.head)
       
-      WHERE expense_model.head =? OR expense_model.expense_date BETWEEN ? AND ? ORDER BY expense_category.name ASC
+      WHERE expense_model.head =? AND expense_model.expense_date BETWEEN ? AND ? ORDER BY expense_category.name ASC
     `;
   db.query(query, [headid, from, to], (error, result) => {
+    if (error) res.status(404).send(error.message);
+    res.status(200).send(result);
+  });
+};
+
+const get_All_Raised_By_Heading_Sub_Heading = (req, res) => {
+  const {headid, subhead, from, to} = req.params
+  if(!headid) return res.status(404).send({message: 'No Heanding Provided'})
+  const query = `
+      SELECT expense_itemsmodel.id, expense_itemsmodel.expense_ID, expense_model.expense_date, 
+      expense_itemsmodel.amount, expense_model.payee_account, expense_model.payment_account,
+       expense_model.pay_method, expense_category.name AS expense_FK, expense_itemsmodel.description,
+      expense_heading.name AS heading
+      FROM expense_itemsmodel
+      
+      JOIN expense_model ON (expense_model.uuid = expense_itemsmodel.expense_ID)
+      JOIN expense_category ON (expense_category.id = expense_itemsmodel.expense_FK)
+      
+      JOIN expense_heading ON(expense_heading.id =  expense_model.head)
+      
+      WHERE expense_model.head =? AND expense_category.id = ? AND expense_model.expense_date BETWEEN ? AND ? ORDER BY expense_category.name ASC
+    `;
+  db.query(query, [headid, subhead, from, to], (error, result) => {
     if (error) res.status(404).send(error.message);
     res.status(200).send(result);
   });
@@ -295,7 +318,8 @@ const EXPENSE = {
   get_Expense_Heading_Report,
   get_All_Raised_By_Heading,
   get_Exp_Analytic_Periodic_Report,
-  get_Expense_Heading_Periodic_Report
+  get_Expense_Heading_Periodic_Report,
+  get_All_Raised_By_Heading_Sub_Heading
 };
 
 export default EXPENSE;

@@ -55,10 +55,10 @@ const LoginForm = ({ setSuccess, setError, setOpen, user, setUser }) => {
         setSuccess(true);
         if (error.status == 500) {
           setSuccess(true);
-          return setError(error.response.statusText);
+          return setError(error?.response?.statusText);
         }
         setSuccess(true);
-        setError(error.response.data.message);
+        setError(error?.response?.data?.message);
       });
   };
   return (

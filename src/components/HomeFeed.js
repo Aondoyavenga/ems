@@ -70,16 +70,16 @@ const HomeFeed = () => {
               }}
             >
               <Grid container spacing={2} alignItems="center" justify="center">
-                <Grid item lg={9} md={9}>
+                <Grid item lg={10} md={10}>
                   
                      <SalesChart 
                       data={paid} 
                       onpaid={onpaid}
                     />
                 </Grid>
-                <Grid item lg={3} md={3}>
+                {/* <Grid item lg={3} md={3}>
                   <MultipleChart />
-                </Grid>
+                </Grid> */}
                 
               </Grid>
             </Grid>

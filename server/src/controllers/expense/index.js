@@ -8,6 +8,8 @@ router
     .get('/', RequireToken, EXPENSE.get_All_Raised_Expense)
     .get('/heads', RequireToken, EXPENSE.get_All_Expense_Headings)
     .get('/group_head/:headid/:from/:to', RequireToken, EXPENSE.get_All_Raised_By_Heading)
+    .get('/group_head_subhead/:headid/:subhead/:from/:to', RequireToken, EXPENSE.get_All_Raised_By_Heading_Sub_Heading)
+
     .get('/headings/:headId', RequireToken, EXPENSE.get_Expense_Heading_Report)
     .get('/head/:headId/:from/:to', RequireToken, EXPENSE.get_Expense_Heading_Periodic_Report)
     .get('/report/:from/:to', RequireToken, EXPENSE.get_Expense_Report)

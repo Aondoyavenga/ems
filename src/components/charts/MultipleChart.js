@@ -42,7 +42,11 @@ const MultipleChart = () => {
     return (
       <div>
         <h3 className="mt-5">Data </h3>
-        <Doughnut data={dataPolar} options={{ responsive: true }} />
+        {/* {
+          dataPolar &&
+          <Doughnut data={dataPolar} options={{ responsive: true }} />
+        } */}
+        
       </div>
     );
   }

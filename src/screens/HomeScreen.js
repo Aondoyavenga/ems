@@ -136,9 +136,9 @@ const HomeScreen = () => {
   };
 
   useEffect(() => {
-    // if (!token) {
-    //   return history.push("/");
-    // }
+    if (!token) {
+      return history.push("/");
+    }
     return (
       get_Session(),
       get_Paid_Onpay_Sales(),

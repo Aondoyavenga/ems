@@ -54,6 +54,7 @@ const EditSaleFeed = ({
     location: "",
     createdAt: "",
     date_purchase: "",
+    status: "",
     build_category: "",
   };
   const [saleForm, setSaleForm] = useState([saleFormTemplate]);
@@ -497,7 +498,7 @@ const EditSaleFeed = ({
                         </td>
                         <td>
                           <input 
-                            type="date" 
+                            type="datetime" 
                             name="date_purchase" 
                             value={salef.date_purchase}
                             onChange={(e) => handleChange(e, index)}

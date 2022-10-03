@@ -261,13 +261,13 @@ const RefunFeed = ({ setOpen, isWidget, setIswidget }) => {
 
   return (
     <div className={`${isWidget ? "isapp__Feed" : "app__Feed"}`}>
-      <AppHeader title="Refun" />
+      <AppHeader title="Refund" />
       <AppSnackbar setOpen={setSuccess} open={success} message={message} />
       <div className="row align-items-center justify-content-center d-flex m-1">
         <div className="col-lg-12 col-md-12">
           {/* table */}
           <h3>
-            Refun Entry
+            Refund Entry
             <span>
               <Tooltip title="Journal List">
                 <IconButton
@@ -359,7 +359,7 @@ const RefunFeed = ({ setOpen, isWidget, setIswidget }) => {
                 className="d-flex align-items-center"
                 style={{ flexDirection: "column", justifyContent: "center" }}
               >
-                <Typography variant="p" className="success">Total Refun Amount</Typography>
+                <Typography variant="p" className="success">Total Refund Amount</Typography>
                 <Typography variant="h5">
                   <b>
                     <s>N</s>:{calcuAmt(jeForm).toLocaleString()}
